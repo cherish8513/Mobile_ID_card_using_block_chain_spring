@@ -5,17 +5,18 @@ import org.springframework.stereotype.Component;
 
 import java.util.Random;
 //개인키 생성
-@Getter
 @Component
 public class GenerateKey {
-    private String fingerPrintPrivateKey;
-    private String facePhotoPrivateKey;
     private int length;
+    private String privateKey;
 
     public GenerateKey(){
         length = 10;
-        this.fingerPrintPrivateKey = getRandomString(length);
-        this.facePhotoPrivateKey = getRandomString(length);
+    }
+
+    public String getPrivateKey(){
+        privateKey = getRandomString(length);
+        return privateKey;
     }
 
     private static String getRandomString(int length)

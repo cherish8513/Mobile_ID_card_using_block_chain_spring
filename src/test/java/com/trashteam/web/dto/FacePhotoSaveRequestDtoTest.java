@@ -22,10 +22,9 @@ public class FacePhotoSaveRequestDtoTest{
                .imgName("hungmin")
                .build();
 
-       requestDto.setPrivateKey(generateKey.getFacePhotoPrivateKey());
+       requestDto.setPrivateKey(generateKey.getPrivateKey());
 
         Assertions.assertThat(requestDto.getImgName()).isEqualTo("hungmin");
         Assertions.assertThat(requestDto.getImgUrl()).isEqualTo("king");
-        Assertions.assertThat(requestDto.getPrivateKey()).isEqualTo(generateKey.getFacePhotoPrivateKey());
     }
 }
