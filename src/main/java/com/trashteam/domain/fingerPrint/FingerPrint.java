@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-//FingerPrint Database
 @Getter
 @NoArgsConstructor
 @Entity

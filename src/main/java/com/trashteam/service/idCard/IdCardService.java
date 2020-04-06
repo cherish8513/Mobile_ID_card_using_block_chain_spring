@@ -10,7 +10,6 @@ import com.trashteam.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-//db와 viewer 사이 트랜잭션 서비스
 @RequiredArgsConstructor
 @Service
 public class IdCardService {

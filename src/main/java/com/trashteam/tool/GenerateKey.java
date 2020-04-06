@@ -4,7 +4,6 @@ import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
-//개인키 생성
 @Component
 public class GenerateKey {
     private int length;

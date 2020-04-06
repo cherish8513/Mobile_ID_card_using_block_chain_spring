@@ -2,7 +2,6 @@ package com.trashteam.block;
 
 import lombok.Builder;
 import lombok.Getter;
-//블록체인 JSON
 @Getter
 public class UserBlock {
     private String fingerPrintPrivateKey;

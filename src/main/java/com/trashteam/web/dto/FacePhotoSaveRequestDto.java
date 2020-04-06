@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//클라이언트에서 데이터베이스로 보내는 JSON
 @Data
 @NoArgsConstructor
 public class FacePhotoSaveRequestDto {
