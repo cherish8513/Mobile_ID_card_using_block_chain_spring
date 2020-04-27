@@ -15,16 +15,19 @@ var main = {
     },
     save : function () {
         var data = {
-            imgName: $('#imgName').val(),
-            imgUrl: $('#imgUrl').val(),
+            privateKey: $('#privateKey').val(),
         };
 
+        var le = "1";
+
         $.ajax({
-            type: 'POST',
-            url: '/api/idCard/facePhoto',
-            dataType: 'json',
-            contentType:'application/json; charset=utf-8',
-            data: JSON.stringify(data)
+            type: 'GET',
+            url: '/api/idCard/UserBlock',
+            data: data,
+            success:function(data){
+                alert(le + data.privateKey + 'ㅇ');
+                console.log(data);
+            }
         }).done(function() {
             alert('사진이 등록되었습니다.');
             window.location.href = '/';

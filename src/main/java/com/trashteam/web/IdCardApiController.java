@@ -1,32 +1,35 @@
 package com.trashteam.web;
 
-import com.trashteam.block.UserBlock;
+
 import com.trashteam.service.idCard.IdCardService;
-import com.trashteam.web.dto.FacePhotoSaveRequestDto;
-import com.trashteam.web.dto.FingerPrintSaveRequestDto;
-import com.trashteam.web.dto.UserInformationSaveRequestDto;
+import com.trashteam.web.dto.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 public class IdCardApiController {
    private final IdCardService idCardService;
+    public static final Path path = Paths.get(System.getProperty("user.home"), ".upload");
 
-    @PostMapping("/api/idCard/user")
-    public UserBlock saveUser(@RequestBody UserInformationSaveRequestDto requestDto){
-        return idCardService.save(requestDto);
+    @PostMapping("/upload")
+    public void fileUpload(@RequestParam("file") MultipartFile file) {
+        idCardService.fileUpload(file);
+        return;
     }
 
-    @PostMapping("/api/idCard/fingerPrint")
-    public long saveFingerPrint(@RequestBody FingerPrintSaveRequestDto requestDto){
-        return idCardService.save(requestDto);
-    }
-
-    @PostMapping("/api/idCard/facePhoto")
-    public long saveFacePhoto(@RequestBody FacePhotoSaveRequestDto requestDto){
-        return idCardService.save(requestDto);
+    @GetMapping("/api/idCard/UserBlock")
+    public UserDataDto save_block(Model model){
+        UserDataDto dto = idCardService.getUserBlock();
+        model.addAttribute("user", dto);
+        return dto;
     }
 }
