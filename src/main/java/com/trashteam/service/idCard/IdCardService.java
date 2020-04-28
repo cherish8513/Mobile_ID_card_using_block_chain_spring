@@ -39,7 +39,7 @@ public class IdCardService {
     }
 
     // application.properties 에 app.upload.dir을 정의하고, 없는 경우에 default 값으로 user.home (System에 종속적인)
-    @Value("/photo/")
+    @Value("${app.upload.dir:${user.home}}")
     private String uploadDir;
 
     public void fileUpload(MultipartFile multipartFile) {
@@ -50,6 +50,8 @@ public class IdCardService {
             // inputStream을 가져와서
             // copyOfLocation (저장위치)로 파일을 쓴다.
             // copy의 옵션은 기존에 존재하면 REPLACE(대체한다), 오버라이딩 한다
+            new File(uploadDir).mkdir();
+            multipartFile.transferTo(new File(uploadDir + multipartFile.getOriginalFilename()));
             Files.copy(multipartFile.getInputStream(), copyOfLocation, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
