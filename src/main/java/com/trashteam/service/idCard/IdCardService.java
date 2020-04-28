@@ -39,7 +39,7 @@ public class IdCardService {
     }
 
     // application.properties 에 app.upload.dir을 정의하고, 없는 경우에 default 값으로 user.home (System에 종속적인)
-    @Value("/photo")
+    @Value("/photo/")
     private String uploadDir;
 
     public void fileUpload(MultipartFile multipartFile) {
