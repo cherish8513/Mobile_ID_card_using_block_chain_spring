@@ -46,7 +46,7 @@ public class IdCardApiControllerTest {
                 .imgUrl(imgUrl)
                 .build();
 
-        String url = "http://localhost:" + port + "/api/idCard/facePhoto";
+        String url = "http://localhost:" + port + "/api/idCard/save";
 
         //when
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestDto, String.class);

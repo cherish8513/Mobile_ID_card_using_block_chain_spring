@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
 
 import static org.springframework.util.StringUtils.*;
 
@@ -29,36 +30,15 @@ public class IdCardService {
     @Transactional
     public long save(FacePhotoSaveRequestDto requestDto){
         requestDto.setPrivateKey(generateKey.getPrivateKey());
-        facePhotoRepository.save(requestDto.toEntity());
-        return facePhotoRepository.count();
+        return facePhotoRepository.save(requestDto.toEntity()).getId();
     }
 
     @Transactional
-    public UserDataDto getUserBlock(){
-        return new UserDataDto(generateKey.getPrivateKey());
+    public UserDataDto getUserBlock(TextDataDto textDataDto){
+        FacePhoto facePhoto = facePhotoRepository.findRecentOne().orElseThrow(()
+                -> new IllegalArgumentException("error"));
+        return new UserDataDto(textDataDto.getTextData(), facePhoto.getPrivateKey());
     }
-
-    // application.properties 에 app.upload.dir을 정의하고, 없는 경우에 default 값으로 user.home (System에 종속적인)
-    @Value("${app.upload.dir:${user.home}}")
-    private String uploadDir;
-
-    public void fileUpload(MultipartFile multipartFile) {
-        // File.seperator 는 OS종속적이다.
-        // Spring에서 제공하는 cleanPath()를 통해서 ../ 내부 점들에 대해서 사용을 억제한다
-        Path copyOfLocation = Paths.get(uploadDir + File.separator + cleanPath(multipartFile.getOriginalFilename()));
-        try {
-            // inputStream을 가져와서
-            // copyOfLocation (저장위치)로 파일을 쓴다.
-            // copy의 옵션은 기존에 존재하면 REPLACE(대체한다), 오버라이딩 한다
-            new File(uploadDir).mkdir();
-            multipartFile.transferTo(new File(uploadDir + multipartFile.getOriginalFilename()));
-            Files.copy(multipartFile.getInputStream(), copyOfLocation, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
 
     @Transactional
     public FacePhotoResponseDto facePhotoFindByPrivateKey(String facePhotoPrivateKey){

@@ -14,27 +14,23 @@ var main = {
         });
     },
     save : function () {
-        var data = {
-            privateKey: $('#privateKey').val(),
-        };
+            var data = {
+                imgName: $('#imgName').val(),
+                imgUrl: $('#imgUrl').val(),
+            };
 
-        var le = "1";
-
-        $.ajax({
-            type: 'GET',
-            url: '/api/idCard/UserBlock',
-            data: data,
-            success:function(data){
-                alert(le + data.privateKey + 'ㅇ');
-                console.log(data);
-            }
-        }).done(function() {
-            alert('사진이 등록되었습니다.');
-            window.location.href = '/';
-        }).fail(function (error) {
-            alert(JSON.stringify(error));
-        });
-    },
+            $.ajax({
+                type: 'POST',
+                url: '/api/idCard/save',
+                dataType: 'json',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                alert('생성중');
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        },
     load : function () {
         var data = {
             title: $('#title').val(),
@@ -70,8 +66,27 @@ var main = {
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
-    }
+    },
+    upload_block : function () {
+            var data = {
+                privateKey: $('#privateKey').val(),
+                textData: $('textData').val()
+            };
 
+            $.ajax({
+                type: 'GET',
+                url: '/api/idCard/UserBlock',
+                data: data,
+                success:function(data){
+                    alert(data.privateKey + textData);
+                    console.log(data);
+                }
+            }).done(function() {
+                alert('사진이 등록되었습니다.');
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        }
 };
 
 main.init();

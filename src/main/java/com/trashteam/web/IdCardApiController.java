@@ -18,17 +18,15 @@ import java.nio.file.Paths;
 @Slf4j
 public class IdCardApiController {
    private final IdCardService idCardService;
-    public static final Path path = Paths.get(System.getProperty("user.home"), ".upload");
 
-    @PostMapping("/upload")
-    public void fileUpload(@RequestParam("file") MultipartFile file) {
-        idCardService.fileUpload(file);
-        return;
+    @PostMapping("/api/idCard/save")
+    public Long save(@RequestBody FacePhotoSaveRequestDto requestDto) {
+        return idCardService.save(requestDto);
     }
 
     @GetMapping("/api/idCard/UserBlock")
-    public UserDataDto save_block(Model model){
-        UserDataDto dto = idCardService.getUserBlock();
+    public UserDataDto save_block(Model model, @RequestBody TextDataDto textDataDto){
+        UserDataDto dto = idCardService.getUserBlock(textDataDto);
         model.addAttribute("user", dto);
         return dto;
     }
