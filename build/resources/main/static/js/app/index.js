@@ -1,7 +1,7 @@
 var main = {
     init : function () {
         var _this = this;
-        $('#btn-save').on('click', function () {
+        $('#btn-save-photo').on('click', function () {
             _this.save();
         });
 
@@ -11,17 +11,37 @@ var main = {
 
         $('#btn-delete').on('click', function () {
             _this.delete();
+        }
+        $('#btn-save-text').on('click', function () {
+            _this.delete();
         });
     },
-    save : function () {
+    save-photo : function () {
             var data = {
                 imgName: $('#imgName').val(),
-                imgUrl: $('#imgUrl').val(),
+                imgUrl: $('#imgUrl').val()
             };
 
             $.ajax({
                 type: 'POST',
-                url: '/api/idCard/save',
+                url: '/api/idCard/save/photo',
+                dataType: 'json',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                alert('생성중');
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        },
+    save-text : function () {
+            var data = {
+                textData: $('#textData').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/idCard/save/text',
                 dataType: 'json',
                 contentType:'application/json; charset=utf-8',
                 data: JSON.stringify(data)
@@ -75,16 +95,16 @@ var main = {
 
             $.ajax({
                 type: 'GET',
-                url: '/api/idCard/UserBlock',
+                url: '/api/idCard/userBlock',
                 data: data,
                 success:function(data){
                     alert(data.privateKey + textData);
                     console.log(data);
                 }
             }).done(function() {
-                alert('사진이 등록되었습니다.');
+                console.log("성공");
             }).fail(function (error) {
-                alert(JSON.stringify(error));
+                console.log(JSON.stringify(error));
             });
         }
 };

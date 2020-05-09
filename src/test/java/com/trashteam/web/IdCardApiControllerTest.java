@@ -46,7 +46,7 @@ public class IdCardApiControllerTest {
                 .imgUrl(imgUrl)
                 .build();
 
-        String url = "http://localhost:" + port + "/api/idCard/save";
+        String url = "http://ec2-13-209-39-224.ap-northeast-2.compute.amazonaws.com:"+"8080"+"/api/idCard/save";
 
         //when
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestDto, String.class);

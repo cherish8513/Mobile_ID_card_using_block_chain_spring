@@ -2,30 +2,22 @@ package com.trashteam.service.idCard;
 
 import com.trashteam.domain.photo.FacePhoto;
 import com.trashteam.domain.photo.FacePhotoRepository;
+import com.trashteam.domain.text.TextData;
+import com.trashteam.domain.text.TextDataRepository;
 import com.trashteam.tool.GenerateKey;
 import com.trashteam.web.dto.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Optional;
-
-import static org.springframework.util.StringUtils.*;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class IdCardService {
     private final FacePhotoRepository facePhotoRepository;
     private final GenerateKey generateKey;
+    private final TextDataRepository textDataRepository;
 
     @Transactional
     public long save(FacePhotoSaveRequestDto requestDto){
@@ -34,22 +26,22 @@ public class IdCardService {
     }
 
     @Transactional
-    public UserDataDto getUserBlock(TextDataDto textDataDto){
-        FacePhoto facePhoto = facePhotoRepository.findRecentOne().orElseThrow(()
-                -> new IllegalArgumentException("error"));
-        return new UserDataDto(textDataDto.getTextData(), facePhoto.getPrivateKey());
+    public long save(TextDataSaveRequestDto requestDto){
+        List<FacePhoto> facePhoto = facePhotoRepository.findRecentOne();
+        requestDto.setPrivateKey(facePhoto.get(0).getPrivateKey());
+        return textDataRepository.save(requestDto.toEntity()).getId();
     }
 
     @Transactional
-    public FacePhotoResponseDto facePhotoFindByPrivateKey(String facePhotoPrivateKey){
-        FacePhoto facePhotoEntity = facePhotoRepository.findByPrivateKey(facePhotoPrivateKey).orElseThrow(() -> new IllegalArgumentException("해당 사진이 없습니다."));
-        return new FacePhotoResponseDto(facePhotoEntity);
-    }
-
-    @Transactional
-    public void delete (String fingerPrintPrivateKey, String facePhotoPrivateKey){
-        FacePhoto facePhoto = facePhotoRepository.findByPrivateKey(facePhotoPrivateKey).orElseThrow(()
-                -> new IllegalArgumentException("해당 사진이 없습니다"));
-        facePhotoRepository.delete(facePhoto);
+    public UserDataDto getUserBlock(){
+        List<TextData> all = textDataRepository.findAll();
+        Long id = all.get(0).getId();
+        TextData textData = textDataRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+        UserDataDto userDataDto = UserDataDto.builder()
+                .textData(textData.getTextData())
+                .privateKey(textData.getPrivateKey())
+                .build();
+        textDataRepository.delete(all.get(0));
+        return userDataDto;
     }
 }
