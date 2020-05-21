@@ -50,8 +50,7 @@ public class IdCardService {
 
     @Transactional
     public PhotoResponseRequestDto load_photo(PhotoResponseRequestDto requestDto, String privateKey){
-        FacePhoto facePhoto = facePhotoRepository.findByPrivateKey(privateKey)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+        FacePhoto facePhoto = facePhotoRepository.findByPrivateKey(privateKey);
         requestDto.setImgName(facePhoto.getImgName());
         requestDto.setImgUrl(facePhoto.getImgUrl());
         return requestDto;
