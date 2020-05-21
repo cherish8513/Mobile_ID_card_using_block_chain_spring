@@ -2,7 +2,9 @@ package com.trashteam.web.dto;
 
 import com.trashteam.domain.photo.FacePhoto;
 import lombok.Builder;
+import lombok.Data;
 
+@Data
 public class FacePhotoSaveRequestDto {
     private String privateKey;
     private String imgUrl;

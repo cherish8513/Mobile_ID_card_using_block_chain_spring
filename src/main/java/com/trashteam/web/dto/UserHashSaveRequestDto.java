@@ -2,7 +2,9 @@ package com.trashteam.web.dto;
 
 import com.trashteam.domain.user.UserHash;
 import lombok.Builder;
+import lombok.Data;
 
+@Data
 public class UserHashSaveRequestDto {
     private String contract_address;
     private String application_id;

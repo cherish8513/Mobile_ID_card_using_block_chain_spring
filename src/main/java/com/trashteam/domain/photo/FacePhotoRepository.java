@@ -8,9 +8,4 @@ import java.util.Optional;
 
 public interface FacePhotoRepository extends JpaRepository<FacePhoto, Long> {
     Optional<FacePhoto> findByPrivateKey(String privateKey);
-
-    @Query(
-            value = "SELECT * FROM face_photo f order by f.id DESC limit 1",
-            nativeQuery = true)
-    List<FacePhoto> findRecentOne();
 }
