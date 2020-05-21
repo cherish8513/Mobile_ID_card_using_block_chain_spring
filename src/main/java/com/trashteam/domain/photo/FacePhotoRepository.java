@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FacePhotoRepository extends JpaRepository<FacePhoto, Long> {
-    @Query("SELECT p FROM FacePhoto p WHERE p.privateKey = :privateKey")
-    FacePhoto findByPrivateKey(@Param("privateKey")String privateKey);
+    @Query(value = "SELECT * FROM face_photo WHERE private_key=:key limit 1", nativeQuery = true)
+    FacePhoto findByPrivateKey(@Param("key")String key);
 }

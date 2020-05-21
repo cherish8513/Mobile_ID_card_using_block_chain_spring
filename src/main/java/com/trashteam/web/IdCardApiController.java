@@ -27,6 +27,7 @@ public class IdCardApiController {
     @GetMapping("/api/idCard/load/photo/{privateKey}")
     public PhotoResponseRequestDto load_photo(@PathVariable String privateKey){
         PhotoResponseRequestDto requestDto = new PhotoResponseRequestDto();
+        System.out.println(privateKey);
         return  idCardService.load_photo(requestDto, privateKey);
     }
 }
